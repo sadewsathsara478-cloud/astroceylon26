@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Abandoned but Not Forgotten – Space Museum</title>
+<style>
+:root{color-scheme:dark;--bg:#04061a;--text:#eef2ff;--muted:#a9b4d8;--card:rgba(20,26,66,.72);--line:rgba(255,255,255,.14);--gold:#ffcf5c;--moon:#cfd6e6;--mars:#ff7a4d;--ok:#4ade80;--bad:#fb7185;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#04061a;--text:#eef2ff;--muted:#a9b4d8}}
+:root[data-theme="dark"]{--bg:#04061a;--text:#eef2ff}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 0,#14196b 0,var(--bg) 60%);color:var(--text);font-family:"Trebuchet MS",Verdana,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,header,footer{position:relative;z-index:1}
+.wrap{max-width:1050px;margin:0 auto;padding:0 18px}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;margin:0}
+.hero{text-align:center;padding:48px 0 10px}
+.badge{display:inline-block;padding:6px 14px;border:1px solid var(--line);border-radius:99px;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);background:rgba(255,255,255,.05)}
+h1{font-size:clamp(2rem,6vw,4rem);line-height:1.05;margin:16px 0 10px;background:linear-gradient(90deg,#fff,var(--gold),var(--mars),#fff);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+@keyframes shine{to{background-position:250% 0}}
+.hero p{max-width:640px;margin:0 auto;color:var(--muted);line-height:1.6}
+.planets{position:relative;height:300px;max-width:700px;margin:10px auto}
+.planet{position:absolute;border-radius:50%;cursor:pointer;border:0;padding:0;transition:transform .4s,filter .4s;animation:float 6s ease-in-out infinite}
+.planet:hover,.planet:focus-visible{transform:scale(1.12) rotate(-6deg);filter:brightness(1.2);outline:none}
+.planet span{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);font-size:.8rem;color:var(--muted);white-space:nowrap}
+@keyframes float{50%{translate:0 -16px}}
+#moonP{width:170px;height:170px;left:12%;top:40px;background:radial-gradient(circle at 32% 28%,#fff,#d7dcea 40%,#8d95ab 100%);box-shadow:0 0 60px rgba(200,210,255,.35),inset -22px -18px 40px rgba(0,0,30,.5)}
+#moonP i{position:absolute;border-radius:50%;background:rgba(80,90,120,.35);box-shadow:inset 3px 3px 6px rgba(0,0,0,.35)}
+#marsP{width:130px;height:130px;right:14%;top:90px;animation-delay:-3s;background:radial-gradient(circle at 32% 28%,#ffb48a,var(--mars) 45%,#7a2410 100%);box-shadow:0 0 60px rgba(255,110,60,.4),inset -18px -14px 34px rgba(40,0,0,.55)}
+#marsP i{position:absolute;border-radius:50%;background:rgba(110,30,10,.35)}
+#marsP:before{content:"";position:absolute;left:30%;top:2%;width:40%;height:10%;border-radius:50%;background:rgba(255,255,255,.75);filter:blur(2px)}
+.orbit{position:absolute;left:50%;top:50%;width:90px;height:90px;margin:-45px;border:1px dashed var(--line);border-radius:50%;animation:spin 14s linear infinite}
+.orbit b{position:absolute;top:-6px;left:50%;font-size:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tabs{display:flex;justify-content:center;gap:10px;margin:36px 0 20px;flex-wrap:wrap}
+.tab{font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);padding:11px 22px;border-radius:99px;cursor:pointer;font-size:1rem;transition:.25s}
+.tab:hover{transform:translateY(-3px)}
+.tab.on{background:linear-gradient(135deg,var(--gold),var(--mars));color:#220;font-weight:700;box-shadow:0 8px 30px rgba(255,150,60,.35)}
+h2{font-size:clamp(1.5rem,4vw,2.2rem);text-align:center}
+.sub{text-align:center;color:var(--muted);margin:8px 0 22px}
+.timeline{display:flex;justify-content:space-between;position:relative;max-width:780px;margin:0 auto 30px;padding:0 10px}
+.timeline:before{content:"";position:absolute;left:20px;right:20px;top:14px;height:2px;background:linear-gradient(90deg,var(--moon),var(--mars))}
+.dot{position:relative;background:none;border:0;color:var(--text);font:inherit;cursor:pointer;text-align:center;font-size:.78rem}
+.dot i{display:block;margin:0 auto 6px;width:28px;height:28px;border-radius:50%;background:var(--bg);border:3px solid var(--gold);transition:.3s}
+.dot:hover i{transform:scale(1.3);box-shadow:0 0 18px var(--gold)}
+.dot.dim{opacity:.35}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;backdrop-filter:blur(8px);transition:transform .35s,box-shadow .35s;animation:pop .6s both;text-align:left;color:var(--text);font:inherit}
+.card:hover,.card:focus-visible{transform:translateY(-10px) rotate(-1deg);box-shadow:0 18px 50px rgba(255,170,80,.28);outline:none}
+@keyframes pop{from{opacity:0;transform:translateY(40px) scale(.9)}}
+.card svg{width:100%;height:130px;animation:float 5s ease-in-out infinite}
+.card small{color:var(--gold);letter-spacing:.1em;text-transform:uppercase}
+.card h3{margin:4px 0 6px;font-size:1.25rem}
+.card p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.5}
+.go{display:inline-block;margin-top:12px;color:var(--gold);font-weight:700}
+.spin{transform-origin:60px 28px;animation:spin .25s linear infinite}
+#fx{position:fixed;inset:0;z-index:50;pointer-events:none;overflow:hidden}
+#fx svg{position:absolute}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(2,3,20,.82);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
+.modal.open{display:flex;animation:fade .3s}
+@keyframes fade{from{opacity:0}}
+.sheet{width:min(780px,100%);max-height:90vh;overflow:auto;background:linear-gradient(160deg,#171d5c,#0a0d30);border:1px solid var(--line);border-radius:26px;padding:24px;animation:zoom .5s cubic-bezier(.2,1.3,.4,1)}
+@keyframes zoom{from{transform:scale(.6) rotate(-4deg);opacity:0}}
+.sheet header{display:flex;align-items:center;gap:16px}
+.sheet header svg{width:120px;height:90px;flex:none}
+.sheet h3{font-size:1.6rem}
+.x{margin-left:auto;align-self:flex-start;background:rgba(255,255,255,.1);border:0;color:var(--text);width:40px;height:40px;border-radius:50%;font-size:1.2rem;cursor:pointer}
+.x:hover{background:var(--bad)}
+.sec{margin-top:14px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.06);border-left:4px solid var(--c);animation:slide .6s both}
+.sec:nth-child(2){animation-delay:.1s}.sec:nth-child(3){animation-delay:.2s}.sec:nth-child(4){animation-delay:.3s}.sec:nth-child(5){animation-delay:.4s}
+@keyframes slide{from{opacity:0;transform:translateX(-30px)}}
+.sec h4{margin:0 0 6px;color:var(--c);font-size:1.02rem}
+.sec p{margin:0;line-height:1.65;color:#dfe5ff}
+.quiz{margin:70px auto 40px;max-width:720px;background:var(--card);border:1px solid var(--line);border-radius:26px;padding:26px;text-align:center}
+.bar{height:8px;border-radius:9px;background:rgba(255,255,255,.12);margin:14px 0 18px;overflow:hidden}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--mars));transition:width .6s}
+.q{font-size:1.2rem;line-height:1.5;margin-bottom:16px;animation:slide .5s}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;color:var(--text);background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:14px;padding:13px;cursor:pointer;transition:.2s}
+.opt:hover:not(:disabled){transform:scale(1.03);background:rgba(255,255,255,.14)}
+.opt.ok{background:var(--ok);color:#052;animation:bounce .6s}
+.opt.no{background:var(--bad);color:#300;animation:shake .4s}
+@keyframes bounce{40%{transform:scale(1.1)}}
+@keyframes shake{25%{translate:-8px}75%{translate:8px}}
+.score{font-weight:700;color:var(--gold)}
+.fb{min-height:1.6em;margin:12px 0;color:var(--muted)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:99px;padding:11px 26px;cursor:pointer;color:#220;background:linear-gradient(135deg,var(--gold),var(--mars))}
+.btn:hover{transform:translateY(-2px)}
+footer{text-align:center;padding:30px 18px 40px;color:var(--muted);border-top:1px solid var(--line);font-size:.9rem;line-height:1.7}
+footer b{color:var(--gold)}
+@media (max-width:560px){.planets{height:250px}#moonP{width:130px;height:130px;left:4%}#marsP{width:100px;height:100px;right:6%}.sheet header svg{width:80px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div id="fx"></div>
+<header class="hero wrap">
+  <span class="badge">NASA Space Apps Challenge 2026</span>
+  <h1>Abandoned but Not Forgotten</h1>
+  <p>Welcome to the Museum at the Edge of the Sky! Robots and spaceships left behind on the Moon and Mars still have amazing stories. Tap a planet to travel there, then open a machine to hear its secret.</p>
+  <div class="planets">
+    <button class="planet" id="moonP" aria-label="Visit the Moon"><i style="width:30px;height:30px;left:30%;top:35%"></i><i style="width:18px;height:18px;left:62%;top:25%"></i><i style="width:40px;height:40px;left:52%;top:58%"></i><i style="width:14px;height:14px;left:20%;top:68%"></i><div class="orbit"><b>🛰️</b></div><span>🌙 Tap: the Moon</span></button>
+    <button class="planet" id="marsP" aria-label="Visit Mars"><i style="width:22px;height:22px;left:25%;top:50%"></i><i style="width:30px;height:16px;left:50%;top:62%"></i><span>🔴 Tap: Mars</span></button>
+  </div>
+</header>
+<main class="wrap">
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-w="all">✨ All worlds</button>
+    <button class="tab" data-w="moon">🌙 Moon</button>
+    <button class="tab" data-w="mars">🔴 Mars</button>
+  </div>
+  <h2 id="wt">The Explorer Timeline</h2>
+  <p class="sub" id="ws">Five machines, 57 years of adventure. Tap a glowing dot or a card!</p>
+  <div class="timeline" id="tl"></div>
+  <div class="grid" id="grid"></div>
+
+  <section class="quiz" id="quiz">
+    <h2>🕵️ Space Detective Quiz</h2>
+    <p class="sub">Use what you learned to crack the cases!</p>
+    <div class="score">⭐ Score: <span id="sc">0</span> / <span id="qt">5</span></div>
+    <div class="bar"><div id="qb"></div></div>
+    <div id="qa"></div>
+  </section>
+</main>
+<footer>
+  <div>Built with 💛 for the <b>2026 NASA Space Apps Challenge</b> · “Abandoned but Not Forgotten”</div>
+  <div>Made by <b>Team AstroCeylon 26 (Colombo, Sri Lanka)</b></div>
+  <div style="opacity:.7">Unofficial educational project. Not affiliated with or endorsed by NASA. All art is drawn with SVG and CSS.</div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="sheet" id="sheet"></div></div>
+
+<script>
+(function(){
+var wheel=function(x,y,r){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#2b2f3a" stroke="#9aa3b5" stroke-width="2.5"/>'};
+var ART={
+eagle:'<polygon points="38,18 82,18 92,46 28,46" fill="#e0a93b"/><rect x="40" y="46" width="40" height="12" fill="#b8862b"/><path d="M42 58L22 80M78 58L98 80M60 58V80" stroke="#d5d8e0" stroke-width="3"/><path d="M12 83h22M86 83h22M49 83h22" stroke="#aaa" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="32" r="7" fill="#7a5a1a"/>',
+lrv:'<rect x="32" y="42" width="56" height="9" rx="3" fill="#d6dae3"/><rect x="48" y="30" width="10" height="12" fill="#9aa3b5"/><rect x="64" y="30" width="10" height="12" fill="#9aa3b5"/><path d="M82 42L90 16Q102 20 104 30Z" fill="#fff"/><path d="M90 16L88 42" stroke="#aaa" stroke-width="2"/>'+wheel(30,66,12)+wheel(92,66,12),
+oppy:'<path d="M14 40L48 30V42L10 54ZM106 40L72 30V42L110 54Z" fill="#355cc8" stroke="#9db4ff" stroke-width="1.5"/><rect x="44" y="38" width="32" height="18" rx="4" fill="#e7e2d8"/><path d="M60 38V14" stroke="#ccc" stroke-width="3"/><rect x="54" y="8" width="12" height="8" rx="2" fill="#ddd"/>'+wheel(36,70,8)+wheel(60,72,8)+wheel(84,70,8)+'<path d="M36 70L44 56M84 70L76 56M60 72V56" stroke="#9aa3b5" stroke-width="3"/>',
+ingenuity:'<g class="spin"><ellipse cx="60" cy="28" rx="52" ry="3" fill="#dfe5ff" opacity=".85"/></g><rect x="52" y="24" width="16" height="6" fill="#f2f2f2"/><rect x="48" y="30" width="24" height="22" rx="4" fill="#cdd3e0"/><rect x="44" y="12" width="32" height="8" fill="#355cc8"/><path d="M52 52L38 80M68 52L82 80M60 52V80" stroke="#b9bfcc" stroke-width="3"/><path d="M32 82h14M74 82h14M54 82h12" stroke="#999" stroke-width="3" stroke-linecap="round"/>',
+curiosity:'<rect x="30" y="34" width="60" height="22" rx="5" fill="#e8e2d6"/><path d="M82 34V12" stroke="#ccc" stroke-width="3"/><rect x="76" y="6" width="14" height="9" rx="2" fill="#ddd"/><path d="M30 46L12 54" stroke="#9aa3b5" stroke-width="4"/><circle cx="52" cy="40" r="5" fill="#ff8c5a"/>'+wheel(30,72,9)+wheel(60,74,9)+wheel(90,72,9)+'<path d="M30 72L40 56M90 72L80 56M60 74V56" stroke="#9aa3b5" stroke-width="3"/>'
+};
+var D=[
+{id:"eagle",w:"moon",y:1969,n:"Apollo 11 Eagle Descent Stage",c:"#e0a93b",tag:"Sea of Tranquility · 1969",
+ t:"The golden launch pad that stayed behind.",
+ s:"On July 20, 1969, Neil Armstrong and Buzz Aldrin landed the Eagle on the Moon. When it was time to go home, only the top half of the lander lifted off. The bottom half, the descent stage, became a launch pad and was left behind, along with a plaque and a few small keepsakes. Weight matters a lot in rocket flights, so every extra kilogram had to stay!",
+ r:"Eagle’s descent engine slowed the lander to a gentle touchdown, and the leftover stage carried science too. Astronauts placed a laser reflector nearby, and scientists on Earth still bounce laser beams off such reflectors to measure the Moon’s distance very precisely. It is even helping us learn how the Moon slowly drifts away from Earth.",
+ st:"The descent stage still sits at Tranquility Base in the Moon’s Sea of Tranquility. With no air or rain to wear it down, it is probably very well preserved. NASA’s Lunar Reconnaissance Orbiter has photographed the site from orbit.",
+ f:"The Moon has no wind, so the Apollo footprints could last for a very long time. A bit of the future is already written in the dust."},
+{id:"lrv",w:"moon",y:1971,n:"Apollo 15 Lunar Roving Vehicle",c:"#9db4ff",tag:"Hadley–Apennine · 1971",
+ t:"The first Moon car ever driven by humans.",
+ s:"Astronauts David Scott and James Irwin folded a battery-powered buggy out of the side of their lander and drove it across the Moon. It let them travel much farther than walking, and it carried a TV camera so people on Earth could watch. At the end of the mission, the rover was parked and left behind, because bringing it home would have cost too much weight.",
+ r:"The rover had wire-mesh wheels so it would not need air-filled tyres, and it ran on batteries that worked in extreme heat and cold. The crew drove about 28 km collecting rocks that helped scientists understand how old the Moon is. Apollo 15 also performed a famous hammer-and-feather drop, which showed that both fall at the same speed without air.",
+ st:"Lunar rovers from Apollo 15, 16 and 17 are still parked on the Moon. Their batteries are long dead, and the Moon’s harsh sunlight and radiation have probably aged them, but they remain in their landing regions.",
+ f:"The rover could be folded flat like a picnic table to fit inside the lander. Its top speed was roughly 13 km/h, about as fast as a quick bicycle ride!"},
+{id:"oppy",w:"mars",y:2004,n:"Opportunity Rover (“Oppy”)",c:"#ff9a6b",tag:"Meridiani Planum · 2004",
+ t:"The little rover that wouldn’t quit.",
+ s:"Oppy landed on Mars on January 25, 2004, and was only supposed to work for 90 Martian days. Instead it kept going for almost 15 Earth years! In 2018 a giant dust storm blocked the sunlight that powered its solar panels. Engineers sent many wake-up calls, but the rover never replied, and NASA ended the mission in February 2019.",
+ r:"Opportunity found hematite and other minerals that formed in the presence of water, showing that parts of ancient Mars were once wet. It drove about 45 km, nearly the length of a marathon, and photographed craters, dunes and rocks all along the way.",
+ st:"Opportunity rests in Perseverance Valley on the rim of Endeavour Crater. It is silent, but still there. Dust and wind may cover it over time, and orbiting spacecraft can see it from above.",
+ f:"Hundreds of thousands of fans helped to name and follow Oppy. Its team often joked that the rover was a stubborn teenager who never wanted to go to bed."},
+{id:"inge",w:"mars",y:2021,n:"Ingenuity Mars Helicopter",c:"#7ee0c3",tag:"Jezero Crater · 2021",
+ t:"The tiny helicopter that flew on another world.",
+ s:"Ingenuity hitched a ride to Mars on the Perseverance rover and was meant to try only five test flights. On April 19, 2021, it made the first powered, controlled flight on another planet. It surprised everyone with 72 flights! In January 2024, one of its rotor blades was damaged during a landing, so NASA retired it.",
+ r:"Mars’s air is about one percent as thick as Earth’s, so Ingenuity’s blades had to spin at about 2,400 rotations per minute to get lift. Its flights proved that aircraft can scout from the sky, helping future missions find safe paths and interesting places to explore.",
+ st:"Ingenuity stands where it landed on its last flight, in Jezero Crater, with a damaged blade. It cannot fly, yet it still holds the record for the first helicopter on another world. Perseverance keeps working nearby.",
+ f:"Ingenuity carried a tiny piece of fabric from the Wright brothers’ 1903 airplane, linking the first flight on Earth to the first flight on Mars."},
+{id:"cur",w:"mars",y:2012,n:"Curiosity Sky Crane Leftovers (+ Voyager)",c:"#ffd27a",tag:"Gale Crater · 2012",
+ t:"Lowering a car-sized robot with a flying crane.",
+ s:"Curiosity landed on August 6, 2012 with a daring trick: a rocket-powered sky crane lowered it on cables. Then the crane cut the cables and flew away to crash a short distance off. Parts such as the heat shield, parachute and back shell were dropped along the way, and they stayed on Mars.",
+ r:"The rover has since found that Gale Crater once had lakes and chemistry that could have supported tiny life. Learning to land heavy robots safely taught engineers lessons that matter for future human missions to Mars.",
+ st:"Curiosity’s discarded landing hardware lies scattered across Gale Crater, and orbiters have photographed it. The rover itself kept climbing Mount Sharp when we last checked. Check NASA for the latest news.",
+ f:"Not all NASA explorers were left behind on a planet. Voyager 1, launched in 1977, carries a Golden Record of sounds and greetings from Earth and is now travelling beyond our Sun’s bubble. It is still phoning home!"}
+];
+var $=function(s){return document.querySelector(s)};
+var world="all";
+
+/* ---- sky ---- */
+var cv=$("#sky"),cx=cv.getContext("2d"),S=[],SH=[],W,H;
+function size(){W=cv.width=innerWidth;H=cv.height=innerHeight;S=[];for(var i=0;i<Math.min(260,W*H/5000);i++)S.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,p:Math.random()*6,v:Math.random()*2+.5})}
+size();addEventListener("resize",size);
+(function draw(t){cx.clearRect(0,0,W,H);S.forEach(function(s){cx.globalAlpha=.4+.6*Math.abs(Math.sin(t/1000*s.v+s.p));cx.fillStyle="#fff";cx.beginPath();cx.arc(s.x,s.y,s.r,0,7);cx.fill()});
+ if(Math.random()<.008)SH.push({x:Math.random()*W,y:Math.random()*H*.5,l:0});
+ SH=SH.filter(function(s){s.x+=9;s.y+=4.5;s.l++;var g=cx.createLinearGradient(s.x,s.y,s.x-90,s.y-45);g.addColorStop(0,"rgba(255,255,255,1)");g.addColorStop(1,"rgba(255,255,255,0)");cx.globalAlpha=1;cx.strokeStyle=g;cx.lineWidth=2;cx.beginPath();cx.moveTo(s.x,s.y);cx.lineTo(s.x-90,s.y-45);cx.stroke();return s.l<60});
+ requestAnimationFrame(draw)})(0);
+
+/* ---- cards & timeline ---- */
+function icon(d,cls){return '<svg viewBox="0 0 120 90" aria-hidden="true">'+ART[d.id==="inge"?"ingenuity":d.id==="cur"?"curiosity":d.id]+'</svg>'}
+function render(){
+ var g=$("#grid"),tl=$("#tl");g.innerHTML="";tl.innerHTML="";
+ D.forEach(function(d,i){
+  var on=world==="all"||world===d.w;
+  var b=document.createElement("button");b.className="dot"+(on?"":" dim");b.innerHTML="<i></i>"+d.y;b.title=d.n;b.onclick=function(){openStory(i)};tl.appendChild(b);
+  if(!on)return;
+  var c=document.createElement("button");c.className="card";c.style.animationDelay=(i*.08)+"s";
+  c.innerHTML=icon(d)+"<small>"+d.tag+"</small><h3>"+d.n+"</h3><p>"+d.t+"</p><span class='go'>Open the story →</span>";
+  c.onclick=function(){openStory(i)};g.appendChild(c)});
+}
+render();
+
+/* ---- world switch + travel animation ---- */
+function travel(to){
+ var fx=$("#fx"),el=document.createElement("div");
+ if(to==="mars"){
+  el.innerHTML='<svg width="120" height="60" viewBox="0 0 120 60"><path d="M0 30Q30 10 20 30Q30 50 0 30Z" fill="#ffb347"><animate attributeName="opacity" values="1;.3;1" dur=".2s" repeatCount="indefinite"/></path><path d="M20 22H80L112 30L80 38H20Z" fill="#eee"/><path d="M80 22Q100 24 112 30Q100 36 80 38Z" fill="#ff5a4d"/><circle cx="62" cy="30" r="5" fill="#6aa7ff"/><path d="M30 22L22 10H40ZM30 38L22 50H40Z" fill="#ff5a4d"/></svg>';
+  el.firstChild.style.cssText="left:0;top:30%";
+  fx.appendChild(el);el.firstChild.animate([{transform:"translate(-140px,40vh) rotate(-35deg)"},{transform:"translate(60vw,-6vh) rotate(-35deg) scale(1.3)"},{transform:"translate(115vw,-30vh) rotate(-35deg) scale(.6)"}],{duration:1700,easing:"ease-in"}).onfinish=function(){el.remove()};
+ }else if(to==="moon"){
+  el.innerHTML='<svg width="110" height="60" viewBox="0 0 110 60"><rect x="20" y="22" width="60" height="9" rx="3" fill="#d6dae3"/><rect x="36" y="12" width="9" height="10" fill="#9aa3b5"/><rect x="54" y="12" width="9" height="10" fill="#9aa3b5"/><path d="M72 22L80 2Q92 6 94 14Z" fill="#fff"/><g><circle cx="22" cy="42" r="11" fill="#2b2f3a" stroke="#9aa3b5" stroke-width="3"/><circle cx="82" cy="42" r="11" fill="#2b2f3a" stroke="#9aa3b5" stroke-width="3"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -2;0 0" dur=".25s" repeatCount="indefinite"/></g></svg>';
+  el.firstChild.style.cssText="left:0;bottom:6%";
+  fx.appendChild(el);el.firstChild.animate([{transform:"translateX(-140px)"},{transform:"translateX(115vw)"}],{duration:2300,easing:"linear"}).onfinish=function(){el.remove()};
+ }
+}
+function setWorld(w,silent){
+ if(w===world)return;var from=world;world=w;
+ document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.dataset.w===w)});
+ $("#wt").textContent=w==="moon"?"🌙 Left on the Moon":w==="mars"?"🔴 Left on Mars":"The Explorer Timeline";
+ $("#ws").textContent=w==="moon"?"No air, no weather: footprints and machines wait quietly in the dust.":w==="mars"?"Red dust, thin air and robots that went further than anyone planned.":"Five machines, 57 years of adventure. Tap a glowing dot or a card!";
+ if(!silent)travel(w);render();
+}
+document.querySelectorAll(".tab").forEach(function(t){t.onclick=function(){setWorld(t.dataset.w)}});
+$("#moonP").onclick=function(){setWorld("moon");$("#tabs").scrollIntoView({behavior:"smooth"})};
+$("#marsP").onclick=function(){setWorld("mars");$("#tabs").scrollIntoView({behavior:"smooth"})};
+addEventListener("mousemove",function(e){var x=(e.clientX/innerWidth-.5)*20,y=(e.clientY/innerHeight-.5)*12;$("#moonP").style.marginLeft=x+"px";$("#marsP").style.marginLeft=(-x*1.5)+"px";$("#moonP").style.marginTop=y+"px"});
+
+/* ---- modal ---- */
+var m=$("#modal"),sh=$("#sheet"),cur=0;
+function openStory(i){
+ cur=i;var d=D[i];
+ var secs=[["🤫 The Secret Story",d.s,"#ffcf5c"],["🔬 Real Science Made Possible",d.r,"#7ee0c3"],["📍 Current Status on "+(d.w==="moon"?"the Moon":"Mars"),d.st,"#9db4ff"],["🎈 Fun Fact",d.f,"#ff8fb1"]];
+ sh.innerHTML='<header><svg viewBox="0 0 120 90">'+ART[d.id==="inge"?"ingenuity":d.id==="cur"?"curiosity":d.id]+'</svg><div><small style="color:var(--gold);letter-spacing:.1em">'+d.tag.toUpperCase()+'</small><h3>'+d.n+'</h3></div><button class="x" aria-label="Close">✕</button></header>'+
+ secs.map(function(s){return '<div class="sec" style="--c:'+s[2]+'"><h4>'+s[0]+'</h4><p>'+s[1]+'</p></div>'}).join("")+
+ '<div style="display:flex;justify-content:space-between;margin-top:18px;gap:10px;flex-wrap:wrap"><button class="btn" id="pv">← Previous</button><button class="btn" id="nx">Next story →</button></div>';
+ m.classList.add("open");sh.scrollTop=0;
+ sh.querySelector(".x").onclick=close;
+ $("#pv").onclick=function(){openStory((cur+D.length-1)%D.length)};
+ $("#nx").onclick=function(){openStory((cur+1)%D.length)};
+ setWorld(d.w==="moon"&&world==="mars"||d.w==="mars"&&world==="moon"?"all":world,true);
+}
+function close(){m.classList.remove("open")}
+m.onclick=function(e){if(e.target===m)close()};
+addEventListener("keydown",function(e){if(e.key==="Escape")close()});
+
+/* ---- confetti ---- */
+function confetti(){
+ var c=document.createElement("canvas");c.width=innerWidth;c.height=innerHeight;c.style.cssText="position:fixed;inset:0;z-index:60;pointer-events:none";document.body.appendChild(c);
+ var x=c.getContext("2d"),P=[],col=["#ffcf5c","#ff7a4d","#7ee0c3","#9db4ff","#ff8fb1"];
+ for(var i=0;i<90;i++)P.push({x:innerWidth/2,y:innerHeight*.6,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,s:Math.random()*10+6,c:col[i%5],a:Math.random()*6,st:i%3===0});
+ var f=0;(function go(){x.clearRect(0,0,c.width,c.height);P.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.45;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.globalAlpha=Math.max(0,1-f/90);
+  if(p.st){x.beginPath();for(var k=0;k<10;k++){var r=k%2?p.s/2:p.s;x.lineTo(Math.cos(k*Math.PI/5)*r,Math.sin(k*Math.PI/5)*r)}x.fill()}else x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});
+  if(++f<90)requestAnimationFrame(go);else c.remove()})();
+}
+
+/* ---- quiz ---- */
+var Q=[
+["Which machine made the first powered, controlled flight on another planet?","Ingenuity helicopter",["Opportunity rover","Apollo Lunar Rover","Eagle lander"],"Yes! Ingenuity flew on Mars in April 2021."],
+["Where did the Apollo 11 Eagle land on the Moon?","Sea of Tranquility",["Gale Crater","Jezero Crater","Meridiani Planum"],"Right! Tranquility Base is still there."],
+["About how far did Opportunity drive on Mars?","About 45 km (a marathon)",["About 4 km","About 450 km","Only 400 m"],"Great! It planned for 90 days and worked for nearly 15 years."],
+["How did Apollo 15 astronauts travel across the Moon?","In a battery-powered rover",["By rocket jumps","On a hovering sled","By walking only"],"Correct! The Moon buggy folded up inside the lander."],
+["What do scientists still do with the reflectors left on the Moon?","Bounce lasers off them",["Listen to music","Charge phone batteries","Grow plants"],"Spot on! It measures the Earth–Moon distance very accurately."]
+];
+var qi=0,sc=0;
+function shuffle(a){return a.sort(function(){return Math.random()-.5})}
+function ask(){
+ $("#qt").textContent=Q.length;$("#qb").style.width=(qi/Q.length*100)+"%";
+ if(qi>=Q.length){var msg=sc===Q.length?"🏆 Master Space Detective! Perfect score!":sc>=3?"🚀 Great job, Detective!":"🔭 Keep exploring, then try again!";
+  $("#qa").innerHTML='<div class="q">'+msg+'</div><button class="btn" id="re">Play again</button>';if(sc>=3)confetti();
+  $("#re").onclick=function(){qi=0;sc=0;$("#sc").textContent=0;ask()};return}
+ var q=Q[qi];
+ $("#qa").innerHTML='<div class="q">Case '+(qi+1)+': '+q[0]+'</div><div class="opts"></div><div class="fb" id="fb"></div>';
+ shuffle([q[1]].concat(q[2])).forEach(function(o){var b=document.createElement("button");b.className="opt";b.textContent=o;
+  b.onclick=function(){var all=document.querySelectorAll(".opt");all.forEach(function(x){x.disabled=true;if(x.textContent===q[1])x.classList.add("ok")});
+   if(o===q[1]){sc++;$("#sc").textContent=sc;$("#fb").textContent="⭐ "+q[3];confetti()}else{b.classList.add("no");$("#fb").textContent="Not this time. The answer is highlighted in green."}
+   var n=document.createElement("button");n.className="btn";n.textContent=qi+1<Q.length?"Next case →":"See my result";n.onclick=function(){qi++;ask()};$("#fb").after(n)};
+  document.querySelector(".opts").appendChild(b)});
+}
+ask();
+})();
+</script>
+</body>
+</html>
